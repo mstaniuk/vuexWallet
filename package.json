@@ -1,0 +1,17 @@
+{
+    "devDependencies": {
+        "babel-core": "^6.25.0",
+        "babel-loader": "^7.1.1",
+        "babel-preset-env": "^1.6.0",
+        "vue": "^2.4.2",
+        "vuex": "^2.3.1",
+        "webpack": "^3.4.1"
+    },
+    "dependencies": {
+        "vue-loader": "^13.0.2",
+        "vue-template-compiler": "^2.4.2"
+    },
+    "scripts": {
+        "start": "webpack --config webpack.config.js"
+    }
+}

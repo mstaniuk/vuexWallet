@@ -1,0 +1,1 @@
+import vueApp from './vue/app.js';
