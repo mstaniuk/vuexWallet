@@ -1,3 +1,5 @@
 export default {
-    walletName: "Portfel"
+    walletName: "Portfel",
+    minimalInvestValue: 100,
+    maximalInvestValue: 100000000
 }

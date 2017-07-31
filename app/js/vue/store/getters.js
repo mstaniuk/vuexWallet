@@ -5,11 +5,18 @@ export default {
     walletsCount(state) {
         return state.wallets.length;
     },
+    fundsFromWallet(state) {
+        return (id) => {
+            return state.wallets.find(wallet => wallet.id === id).funds;
+        }
+    },
     walletsWithoutFund(state) {
         return (id) => {
-            state.wallets.filter((wallet) => {
-                wallet.funds.findIndex((fund) => { fund.id === id }) < 0;
-            })
+            return state.wallets.filter(wallet => {
+                return wallet.funds.findIndex(fund => {
+                    return fund.id === id;
+                }) < 0
+            });
         }
     },
     funds(state) {
@@ -17,5 +24,5 @@ export default {
     },
     fundsCount(state) {
         return state.funds.length
-    }
+    },
 };

@@ -66,58 +66,14 @@ export const formatDate = function(d) {
 }
 
 // temp
-export const fakeData = [{
-        "id": "001",
-        "name": "Testowy Fundusz #0",
-        "risk": 2,
-        "horizon": 3,
-    },
-    {
-        "id": "002",
-        "name": "Testowy Fundusz #2",
-        "risk": 3,
-        "horizon": 6,
-    },
-    {
-        "id": "003",
-        "name": "Testowy Fundusz #3",
-        "risk": 3,
-        "horizon": 6,
-    },
-    {
-        "id": "004",
-        "name": "Testowy Fundusz #4",
-        "risk": 1,
-        "horizon": 6,
-    },
-    {
-        "id": "005",
-        "name": "Testowy Fundusz #5",
-        "risk": 5,
-        "horizon": 5,
-    },
-    {
-        "id": "006",
-        "name": "Testowy Fundusz #6",
-        "risk": 1,
-        "horizon": 1,
-    },
-    {
-        "id": "007",
-        "name": "Testowy Fundusz #7",
-        "risk": 1,
-        "horizon": 1,
-    },
-    {
-        "id": "008",
-        "name": "Testowy Fundusz #8",
-        "risk": 1,
-        "horizon": 1,
-    },
-    {
-        "id": "009",
-        "name": "Testowy Fundusz #9",
-        "risk": 1,
-        "horizon": 1,
-    }
+export const fakeData = [
+    {"id": "001","name": "Testowy Fundusz #0","risk": 2,"horizon": 3},
+    {"id": "002","name": "Testowy Fundusz #2","risk": 3,"horizon": 6},
+    {"id": "003","name": "Testowy Fundusz #3","risk": 3,"horizon": 6},
+    {"id": "004","name": "Testowy Fundusz #4","risk": 1,"horizon": 6},
+    {"id": "005","name": "Testowy Fundusz #5","risk": 5,"horizon": 5},
+    {"id": "006","name": "Testowy Fundusz #6","risk": 1,"horizon": 1},
+    {"id": "007","name": "Testowy Fundusz #7","risk": 1,"horizon": 1},
+    {"id": "008","name": "Testowy Fundusz #8","risk": 1,"horizon": 1},
+    {"id": "009","name": "Testowy Fundusz #9","risk": 1,"horizon": 1}
 ]

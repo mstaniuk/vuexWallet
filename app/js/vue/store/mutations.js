@@ -1,5 +1,6 @@
 import defaults from '../../defaults'
 import { checkDateFormat, fakeData } from '../../misc'
+import Vue from 'vue';
 import Axios from 'axios';
 
 export default {
@@ -7,41 +8,70 @@ export default {
         state.funds = fakeData;
     },
 
-    addWallet(state, { name, startDate, endDate }) {
+    addWallet(state, { id, name, startDate, endDate, investValue = 10000, displayType = 'percent' }) {
         name = !!name ? name : defaults.walletName;
-        let id = state.wallets.length;
-
-        state.wallets.push({
-            id,
-            name,
-            startDate,
-            endDate,
-            funds: []
-        });
-
+        Vue.set(
+            state.wallets,
+            state.wallets.length,
+            {
+                id,
+                name,
+                startDate,
+                endDate,
+                investValue,
+                displayType,
+                funds: []
+            }
+        )
     },
     removeWallet(state, { id }) {
-        const index = state.wallets.findIndex((el) => {
-            return el.id === id;
-        });
+        const index = state.wallets.findIndex(wallet => wallet.id === id);
 
         if (index >= 0) {
-            state.wallets.splice(index, 1);
+            Vue.delete(state.wallets, index)
         }
     },
 
-    setWalletStartDate(store, { date }) {},
-    setWalletEndDate(store, { date }) {},
-    setWalletName(store, { name }) {},
-    setWaletInvestVaue(store, { value }) {},
-    setWalletMinimalInvestValue(store, { value }) {},
-    setWalletMaximalInvestValue(store, { value }) {},
+    setWalletStartDate(state, { walletId, date }) {
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        Vue.set(wallet, 'startDate', date);
+    },
+    setWalletEndDate(state, { walletId, date }) {
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        Vue.set(wallet, 'endDate', date);
+    },
+    setWalletName(state, { walletId, name }) {
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        Vue.set(wallet, 'name', name);
+    },
+    setWaletInvestVaue(state, { walletId, value }) {
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        Vue.set(wallet, 'investValue', value);
+    },
+    addFundToWallet(state, { walletId, fund }) {
+        // Fund will be fetched by Ajax inside Action
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        Vue.set(wallet.funds, wallet.funds.length, fund);
+    },
+    removeFundFromWallet(state, { walletId, fundId }) {
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        let index = wallet.funds.findIndex(fund => fund.id === fundId);
 
-    addFundToWallet(store, { fundId }) {},
-    removeFundFromWallet(store, { fundId }) {},
+        if (index >= 0) {
+            Vue.delete(wallet.funds, index);
+        }
+    },
 
-    setFundStartValue(store, { fundId }, value) {},
-    setFundEndValue(store, { fundId }, value) {},
-    setFundLocked(store, { fundId }, value) {},
-    setFundPercentage(store, { fundId }, value) {},
+    setFundLocked(state, { walletId, fundId, value }) {
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        let fund = wallet.funds.find(fund => fund.id === fundId);
+
+        Vue.set(fund, 'isLocked', value);
+    },
+    setFundPercentage(state, { walletId, fundId, value }) {
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        let fund = wallet.funds.find(fund => fund.id === fundId);
+
+        Vue.set(fund, 'percentage', value);
+    },
 };
