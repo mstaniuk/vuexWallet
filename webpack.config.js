@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     entry: './app/js/entry.js',
@@ -9,18 +10,14 @@ module.exports = {
     module: {
         rules: [{
                 test: /\.vue$/,
-                use: ['vue-loader']
+                use: [
+                    'vue-loader'
+                ]
             },
             {
                 test: /\.js$/,
-                use: [{
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env']
-                    }
-                }]
+                use: ['babel-loader']
             }
         ]
     }
-
 }

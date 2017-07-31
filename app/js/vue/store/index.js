@@ -8,11 +8,9 @@ import Vue from 'vue';
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+export const store = new Vuex.Store({
     state,
     getters,
     mutations,
     actions
 });
-
-export default config;

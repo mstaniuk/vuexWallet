@@ -1,6 +1,34 @@
+import defaults from '../../defaults'
+import { checkDateFormat, fakeData } from '../../misc'
+import Axios from 'axios';
+
 export default {
-    addWallet() {},
-    removeWallet() {},
+    fillData(state) {
+        state.funds = fakeData;
+    },
+
+    addWallet(state, { name, startDate, endDate }) {
+        name = !!name ? name : defaults.walletName;
+        let id = state.wallets.length;
+
+        state.wallets.push({
+            id,
+            name,
+            startDate,
+            endDate,
+            funds: []
+        });
+
+    },
+    removeWallet(state, { id }) {
+        const index = state.wallets.findIndex((el) => {
+            return el.id === id;
+        });
+
+        if (index >= 0) {
+            state.wallets.splice(index, 1);
+        }
+    },
 
     setWalletStartDate(store, { date }) {},
     setWalletEndDate(store, { date }) {},
