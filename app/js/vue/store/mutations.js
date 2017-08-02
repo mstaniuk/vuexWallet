@@ -1,19 +1,18 @@
 import defaults from '../../defaults'
-import { checkDateFormat, fakeData } from '../../misc'
+import { checkDateFormat } from '../../misc'
 import Vue from 'vue';
 import Axios from 'axios';
 
 export default {
-    fillData(state) {
-        state.funds = fakeData;
+    getAllFunds(state, { data }) {
+        state.funds = data;
     },
 
     addWallet(state, { id, name, startDate, endDate, investValue = 10000, displayType = 'percent' }) {
         name = !!name ? name : defaults.walletName;
         Vue.set(
             state.wallets,
-            state.wallets.length,
-            {
+            state.wallets.length, {
                 id,
                 name,
                 startDate,
@@ -49,7 +48,6 @@ export default {
         Vue.set(wallet, 'investValue', value);
     },
     addFundToWallet(state, { walletId, fund }) {
-        // Fund will be fetched by Ajax inside Action
         let wallet = state.wallets.find(wallet => wallet.id === walletId);
         Vue.set(wallet.funds, wallet.funds.length, fund);
     },

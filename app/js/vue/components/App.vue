@@ -1,6 +1,5 @@
 <template>
     <div class="wallet">
-        <button @click="getData">Get Data</button>
         <div>
             <h2>Wallets ({{walletsCount}})</h2>
             <ul>
@@ -33,7 +32,7 @@ import {
 } from 'vuex'
 export default {
     created() {
-        // dispatch Ajax call
+        this.$store.dispatch('getAllFunds');
     },
     data() {
         return {
@@ -41,9 +40,6 @@ export default {
         }
     },
     methods: {
-        getData() {
-            this.$store.commit('fillData');
-        },
         addDummy() {
             this.nextWalletId++;
             this.$store.commit('addWallet', {
