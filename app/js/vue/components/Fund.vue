@@ -25,6 +25,10 @@
         </div>
         <custom-select :value="fund.percentage" @input="changePercentage" :min="0" :max="100" />
         <button @click="remove">X</button>
+        <button @click="toggleLock">
+            <span v-if="fund.isLocked">Unlock</span>
+            <span v-else>Lock</span>
+        </button>
     </div>
 </template>
 
@@ -40,7 +44,14 @@ export default {
             this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value: val });
         },
         remove() {
-            this.$store.commit('removeFundFromWallet', { walletId: this.walletId, fundId: this.fund.id })
+            this.$store.dispatch('removeFundFromWallet', { walletId: this.walletId, fundId: this.fund.id })
+        },
+        toggleLock() {
+            // Todo: dispatch something ¯\_(ツ)_/¯
+            // this.$store.dispatch()
+
+            // Temp:
+            this.fund.isLocked = !this.fund.isLocked;
         }
     },
     props: ['fund', 'walletId'],

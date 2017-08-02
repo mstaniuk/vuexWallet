@@ -1,7 +1,15 @@
 <template>
     <div>
         <div>
-            <h3>{{ wallet.name }}</h3>
+            <h3 v-if="!isEditing">
+                {{ wallet.name }}
+                <button @click="toggleEdit">Edit</button>
+            </h3>
+            <div v-else>
+                <input v-model.lazy.trim="newName">
+                <button @click="saveEdit">save</button>
+                <button @click="discardEdit">cancel</button>
+            </div>
         </div>
         <div>
             <div>
@@ -25,7 +33,6 @@
             </li>
         </ul>
     
-        <button @click="dummy(wallet.id)">Change Name</button>
         <custom-select :value="wallet.investValue" @input="setInvestValue" :min="500" :max="100000000" />
     </div>
 </template>
@@ -37,7 +44,9 @@ import CustomSelect from './CustomSelect.vue';
 export default {
     data() {
         return {
-            invest: 500
+            invest: 500,
+            isEditing: false,
+            newName: this.wallet.name
         }
     },
     computed: {
@@ -49,20 +58,18 @@ export default {
         setInvestValue(value) {
             this.$store.commit('setWaletInvestVaue', { walletId: this.wallet.id, value });
         },
-        dummy(id) {
-            this.$store.commit('addFundToWallet', {
-                walletId: this.wallet.id, fund:
-                {
-                    id: '002',
-                    name: "Test fund",
-                    startValue: 234,
-                    endValue: 345,
-                    risk: 2,
-                    horizon: 2,
-                    isLocked: false,
-                    percentage: (100 / (this.wallet.funds.length + 1))
-                }
-            })
+        toggleEdit() {
+            this.isEditing = !this.isEditing;
+        },
+        saveEdit() {
+            // Todo commit name change
+            this.wallet.name = this.newName;
+            this.toggleEdit();
+        },
+        discardEdit() {
+            // Todo commit name change
+            this.newName = this.wallet.name;
+            this.toggleEdit();
         }
     },
     components: {

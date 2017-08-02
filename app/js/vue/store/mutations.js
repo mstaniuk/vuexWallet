@@ -49,7 +49,18 @@ export default {
     },
     addFundToWallet(state, { walletId, fund }) {
         let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        fund.isLocked = typeof fund.isLocked === 'undefined' ? false : fund.isLocked;
+        fund.percentage = typeof fund.percentage === 'undefined' ? 0 : fund.percentage;
         Vue.set(wallet.funds, wallet.funds.length, fund);
+    },
+    resetPercentages(state, { walletId }) {
+        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        let funds = wallet.funds;
+
+        for (let i = 0, ii = funds.length; i < ii; i++) {
+            let fund = funds[i];
+            Vue.set(fund, 'percentage', 100 / funds.length);
+        }
     },
     removeFundFromWallet(state, { walletId, fundId }) {
         let wallet = state.wallets.find(wallet => wallet.id === walletId);
