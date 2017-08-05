@@ -33,27 +33,26 @@ export default {
             this.setPositionFromValue(this.innerValue);
         },
         onMouseDown(e) {
-            e.preventDefault();
             this.isActive = !this.disabled;
 
             if(this.isActive) {
+                e.preventDefault();
                 this.lastPosition = e.clientX;
                 this.setPosition(e.offsetX);
             }
         },
         onTouchStart(e) {
-            e.preventDefault();
             this.isActive = !this.disabled;
 
             if(this.isActive) {
+                e.preventDefault();
                 this.lastPosition = e.targetTouches[0].clientX;
                 this.setPosition(e.targetTouches[0].pageX - this.widgetBounds.left);
             }
         },
         onMouseMove(e) {
-            e.stopPropagation();
-
             if (this.isActive && !this.disabled) {
+                e.stopPropagation();
                 var clientX = typeof e.targetTouches !== 'undefined' ? e.targetTouches[0].clientX : e.clientX;
                 this.setPosition(this.position + clientX - this.lastPosition);
 
@@ -67,10 +66,9 @@ export default {
             }
         },
         onMouseUp(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
             if (this.isActive && !this.disabled) {
+                e.preventDefault();
+                e.stopPropagation();
                 this.lastPosition = null;
                 this.isActive = false;
             }
@@ -109,26 +107,11 @@ export default {
         }
     },
     props: {
-        min: {
-            type: Number,
-            default: 0
-        },
-        max: {
-            type: Number,
-            default: 100
-        },
-        step: {
-            type: Number,
-            default: 1
-        },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
-        value: {
-            type: Number,
-            default: 0
-        }
+        min: {type: Number, default: 0},
+        max: {type: Number, default: 100},
+        step: {type: Number, default: 1},
+        disabled: {type: Boolean, default: false},
+        value: {type: Number, default: 0}
     },
     data() {
         return {

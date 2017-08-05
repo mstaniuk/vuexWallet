@@ -33,18 +33,18 @@
             </li>
         </ul>
     
-        <custom-select :value="wallet.investValue" @input="setInvestValue" :min="500" :max="100000000" />
+        <custom-select v-model="rangeInvestValue" :min="1" :max="investValueRangeMax" />
     </div>
 </template>
 
 <script>
 import Fund from './Fund.vue';
 import CustomSelect from './CustomSelect.vue';
+import defaults from '../../defaults.js';
 
 export default {
     data() {
         return {
-            invest: 500,
             isEditing: false,
             newName: this.wallet.name
         }
@@ -52,6 +52,38 @@ export default {
     computed: {
         funds() {
             return this.$store.getters.fundsFromWallet(this.wallet.id);
+        },
+        rangeInvestValue: {
+            set: function (val) {
+                var sVal = '' + val;
+                var first = parseInt((sVal).charAt(0));
+                var second = parseInt((sVal).charAt(1)) || 0;
+
+                if (sVal.length === 1) {
+                    second = first;
+                    first = 0;
+                } else if (second === 0) {
+                    return;
+                }
+
+                const investValue = (second) * Math.pow(10, first) * defaults.minimalInvestValue;
+                this.$store.commit('setWaletInvestVaue', {walletId: this.wallet.id, value: investValue});
+            },
+            get: function () {
+                var sVal = '' + this.wallet.investValue;
+                var first = parseInt((sVal).charAt(0));
+                var valLen = sVal.length;
+                return parseInt('' + (valLen - 3) + (first));
+            }
+        },
+        investValueRangeMax() {
+            let investDiff = defaults.maximalInvestValue;
+
+            if(defaults.minimalInvestValue > 0) {
+                investDiff = defaults.maximalInvestValue / defaults.minimalInvestValue;
+            }
+            
+            return (Math.ceil(Math.log(investDiff + 1) / Math.LN10) - 1) * 10 + 1;
         }
     },
     methods: {
@@ -79,4 +111,3 @@ export default {
     props: ['wallet']
 }
 </script>
-
