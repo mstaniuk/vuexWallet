@@ -1,6 +1,7 @@
 <template>
     <div>
         <div>
+            <button @click="remove">X</button>
             <h3 v-if="!isEditing">
                 {{ wallet.name }}
                 <button @click="toggleEdit">Edit</button>
@@ -33,13 +34,13 @@
             </li>
         </ul>
     
-        <custom-select v-model="rangeInvestValue" :min="1" :max="investValueRangeMax" />
+        <custom-range v-model="rangeInvestValue" :min="1" :max="investValueRangeMax" />
     </div>
 </template>
 
 <script>
 import Fund from './Fund.vue';
-import CustomSelect from './CustomSelect.vue';
+import CustomRange from './CustomRange.vue';
 import defaults from '../../defaults.js';
 
 export default {
@@ -55,9 +56,9 @@ export default {
         },
         rangeInvestValue: {
             set: function (val) {
-                var sVal = '' + val;
-                var first = parseInt((sVal).charAt(0));
-                var second = parseInt((sVal).charAt(1)) || 0;
+                const sVal = '' + val;
+                let first = parseInt((sVal).charAt(0));
+                let second = parseInt((sVal).charAt(1)) || 0;
 
                 if (sVal.length === 1) {
                     second = first;
@@ -70,9 +71,9 @@ export default {
                 this.$store.commit('setWaletInvestVaue', {walletId: this.wallet.id, value: investValue});
             },
             get: function () {
-                var sVal = '' + this.wallet.investValue;
-                var first = parseInt((sVal).charAt(0));
-                var valLen = sVal.length;
+                const sVal = '' + this.wallet.investValue;
+                const first = parseInt((sVal).charAt(0));
+                const valLen = sVal.length;
                 return parseInt('' + (valLen - 3) + (first));
             }
         },
@@ -102,11 +103,14 @@ export default {
             // Todo commit name change
             this.newName = this.wallet.name;
             this.toggleEdit();
+        },
+        remove() {
+            this.$store.commit('removeWallet', {id: this.wallet.id});
         }
     },
     components: {
         Fund,
-        CustomSelect
+        CustomRange
     },
     props: ['wallet']
 }

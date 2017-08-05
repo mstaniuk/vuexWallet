@@ -25,4 +25,9 @@ export default {
     fundsCount(state) {
         return state.funds.length
     },
+    fundsWallet(state) {
+        return (id) => {
+            return state.wallets.find(wallet => wallet.id === id);
+        }
+    }
 };

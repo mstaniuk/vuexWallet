@@ -23,7 +23,7 @@
                 <small>{{fund.percentage}}</small>
             </div>
         </div>
-        <custom-select :value="fund.percentage" @input="changePercentage" :disabled="fund.isLocked" :min="0" :max="100" />
+        <custom-range v-model="percentage" :disabled="isSingle || fund.isLocked" :min="0" :max="100" />
         <button @click="remove">X</button>
         <button @click="toggleLock">
             <span v-if="fund.isLocked">Unlock</span>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import CustomSelect from './CustomSelect.vue';
+import CustomRange from './CustomRange.vue';
 
 export default {
     methods: {
@@ -41,7 +41,7 @@ export default {
             this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value: val });
         },
         changePercentage(val) {
-            this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value: val });
+            
         },
         remove() {
             this.$store.dispatch('removeFundFromWallet', { walletId: this.walletId, fundId: this.fund.id })
@@ -54,9 +54,25 @@ export default {
             this.fund.isLocked = !this.fund.isLocked;
         }
     },
+    computed: {
+        wallet() {
+            return this.$store.getters.fundsWallet(this.walletId);
+        },
+        isSingle() {
+            return this.wallet.funds.length < 2;
+        },
+        percentage: {
+            get() {
+                return this.fund.percentage;
+            },
+            set(value) {
+                this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value });
+            }
+        }
+    },
     props: ['fund', 'walletId'],
     components: {
-        CustomSelect
+        CustomRange
     }
 }
 </script>

@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-import CustomSelect from './CustomSelect.vue';
 import FundLine from './FundLine.vue';
 import Wallet from './Wallet.vue';
 
@@ -54,7 +52,6 @@ export default {
         ...mapGetters(['walletsCount', 'fundsCount', 'wallets', 'funds'])
     },
     components: {
-        CustomSelect,
         FundLine,
         Wallet
     }
