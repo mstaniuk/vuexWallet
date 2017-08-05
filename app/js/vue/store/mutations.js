@@ -1,5 +1,5 @@
 import defaults from '../../defaults'
-import { checkDateFormat } from '../../misc'
+import { checkDateFormat, distribute } from '../../misc'
 import Vue from 'vue';
 import Axios from 'axios';
 
@@ -7,7 +7,6 @@ export default {
     getAllFunds(state, { data }) {
         state.funds = data;
     },
-
     addWallet(state, { id, name, startDate, endDate, investValue = 10000, displayType = 'percent' }) {
         name = !!name ? name : defaults.walletName;
         Vue.set(
@@ -30,7 +29,6 @@ export default {
             Vue.delete(state.wallets, index)
         }
     },
-
     setWalletStartDate(state, { walletId, date }) {
         let wallet = state.wallets.find(wallet => wallet.id === walletId);
         Vue.set(wallet, 'startDate', date);
@@ -70,7 +68,6 @@ export default {
             Vue.delete(wallet.funds, index);
         }
     },
-
     setFundLocked(state, { walletId, fundId, value }) {
         let wallet = state.wallets.find(wallet => wallet.id === walletId);
         let fund = wallet.funds.find(fund => fund.id === fundId);
@@ -79,8 +76,20 @@ export default {
     },
     setFundPercentage(state, { walletId, fundId, value }) {
         let wallet = state.wallets.find(wallet => wallet.id === walletId);
-        let fund = wallet.funds.find(fund => fund.id === fundId);
+        let staticFund = wallet.funds.find(fund => fund.id === fundId);
+        let staticFundIndex = wallet.funds.findIndex(fund => fund.id === fundId);
+        let funds = wallet.funds.map(f => f.percentage);
 
-        Vue.set(fund, 'percentage', value);
-    },
+        Vue.set(staticFund, 'percentage', value);
+
+        let newValues = distribute(funds, staticFundIndex, 100);
+
+        for (let i = 0, ii = wallet.funds.length; i < ii; i++) {
+            if (i === staticFundIndex) continue;
+            const fund = wallet.funds[i];
+            const val = newValues[i];
+
+            Vue.set(fund, 'percentage', val);
+        }
+    }
 };

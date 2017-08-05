@@ -35,18 +35,25 @@ export default {
         onMouseDown(e) {
             e.preventDefault();
             this.isActive = !this.disabled;
-            this.lastPosition = e.clientX;
-            this.setPosition(e.offsetX);
+
+            if(this.isActive) {
+                this.lastPosition = e.clientX;
+                this.setPosition(e.offsetX);
+            }
         },
         onTouchStart(e) {
             e.preventDefault();
             this.isActive = !this.disabled;
-            this.lastPosition = e.targetTouches[0].clientX;
-            this.setPosition(e.targetTouches[0].pageX - this.widgetBounds.left);
+
+            if(this.isActive) {
+                this.lastPosition = e.targetTouches[0].clientX;
+                this.setPosition(e.targetTouches[0].pageX - this.widgetBounds.left);
+            }
         },
         onMouseMove(e) {
+            e.stopPropagation();
+
             if (this.isActive && !this.disabled) {
-                e.stopPropagation();
                 var clientX = typeof e.targetTouches !== 'undefined' ? e.targetTouches[0].clientX : e.clientX;
                 this.setPosition(this.position + clientX - this.lastPosition);
 
@@ -60,10 +67,10 @@ export default {
             }
         },
         onMouseUp(e) {
-            if (this.isActive && !this.disabled) {
-                e.preventDefault();
-                e.stopPropagation();
+            e.preventDefault();
+            e.stopPropagation();
 
+            if (this.isActive && !this.disabled) {
                 this.lastPosition = null;
                 this.isActive = false;
             }

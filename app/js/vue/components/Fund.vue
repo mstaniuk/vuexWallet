@@ -23,7 +23,7 @@
                 <small>{{fund.percentage}}</small>
             </div>
         </div>
-        <custom-select :value="fund.percentage" @input="changePercentage" :min="0" :max="100" />
+        <custom-select :value="fund.percentage" @input="changePercentage" :disabled="fund.isLocked" :min="0" :max="100" />
         <button @click="remove">X</button>
         <button @click="toggleLock">
             <span v-if="fund.isLocked">Unlock</span>
