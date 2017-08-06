@@ -8,5 +8,7 @@
     * Create SVG Sprite on build :x:
     * Create watchers
 
-* Vue/Vuex :construction::x:
+* Vue/Vuex :construction:
+    * Add Vuex to project :white_check_mark:
+    
 * Styles :construction::x:
