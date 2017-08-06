@@ -1,4 +1,8 @@
 export default {
     funds: [],
-    wallets: []
+    wallets: [],
+    misc: {
+        isFundsLoading: false,
+        isWalletsLoading: false,
+    }
 }

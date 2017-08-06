@@ -1,1 +1,13 @@
-@import './components/customRange'
+@import './base/normalize';
+@import './base/color';
+@import './base/base';
+@import './base/typography';
+@import './components/site-header';
+@import './components/site-content';
+@import './components/site-footer';
+@import './components/custom-range';
+@import './components/button';
+@import './components/funds-list';
+@import './components/fund-line';
+@import './components/loader';
+@import './components/section';

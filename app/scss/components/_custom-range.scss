@@ -18,7 +18,7 @@
     }
     &:not(.isActive) {
         #{$root}__handle {
-            animation: impulse 0.4s 1 ease-in-out;
+            animation: impulse 0.5s 1 ease-out;
         }
     }
     &.isDisabled {
@@ -26,10 +26,10 @@
             cursor: default;
         }
         #{$root}__handle {
-            background-color: #f1f1f1;
+            background-color: $color-gray-light;
         }
         #{$root}__bar-inner {
-            background-color: #aaa;
+            background-color: $color-gray-light;
         }
     }
     &__bar {
@@ -37,7 +37,7 @@
         will-change: left, transform;
         width: 100%;
         height: 5px;
-        border: 1px solid #dddddd;
+        border: 1px solid $color-gray-light;
         background-color: transparent;
     }
     &__bar-inner {
@@ -47,7 +47,7 @@
         will-change: width;
         height: 100%;
         width: 0%;
-        background-color: #F44336;
+        background-color: $color-blue;
     }
     &__handle {
         transition: box-shadow 250ms;
@@ -55,8 +55,8 @@
         top: 50%;
         left: 0;
         will-change: left, box-shadow;
-        border: 1px solid #ddd;
-        background-color: #fff;
+        border: 1px solid rgba($color-gray, 0.3);
+        background-color: $color-white;
         width: 20px;
         height: 20px;
         border-radius: 50%;
@@ -78,10 +78,10 @@
     }
     @keyframes impulse {
         0% {
-            box-shadow: 0 0 0 1px rgba(0, 0, 0, .1);
+            box-shadow: 0 0 0 1px rgba($color-black, .1);
         }
         100% {
-            box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+            box-shadow: 0 0 0 20px rgba($color-black, 0);
         }
     }
 }

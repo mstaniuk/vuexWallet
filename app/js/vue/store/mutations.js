@@ -91,5 +91,11 @@ export default {
 
             Vue.set(fund, 'percentage', val);
         }
+    },
+    setWalletLoading({ misc }, { isLoading }) {
+        Vue.set(misc, 'isWalletLoading', isLoading);
+    },
+    setFundsLoading({ misc }, { isLoading }) {
+        Vue.set(misc, 'isFundsLoading', isLoading);
     }
 };

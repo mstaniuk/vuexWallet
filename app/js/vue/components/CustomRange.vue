@@ -18,14 +18,17 @@ export default {
         document.addEventListener('touchmove', this.onMouseMove);
         document.addEventListener('mouseup', this.onMouseUp);
         document.addEventListener('touchend', this.onMouseUp);
-        window.addEventListener('resize', debounce(this.getWidgetBounds, 100));
+        window.addEventListener('resize', this.getWidgetBounds);
 
         this.getWidgetBounds();
         this.setPositionFromValue(this.innerValue);
     },
     beforeDestroy: function () {
         document.removeEventListener('mousemove', this.onMouseMove);
+        document.removeEventListener('touchmove', this.onMouseMove);
         document.removeEventListener('mouseup', this.onMouseUp);
+        document.removeEventListener('touchend', this.onMouseUp);
+        window.removeEventListener('resize', this.getWidgetBounds);
     },
     methods: {
         getWidgetBounds() {

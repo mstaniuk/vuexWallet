@@ -24,16 +24,17 @@
             </div>
         </div>
         <custom-range v-model="percentage" :disabled="isSingle || fund.isLocked" :min="0" :max="100" />
-        <button @click="remove">X</button>
-        <button @click="toggleLock">
-            <span v-if="fund.isLocked">Unlock</span>
-            <span v-else>Lock</span>
-        </button>
+        <custom-button @click="remove" type="primary round">&times;</custom-button>
+        <custom-button @click="toggleLock" type="primary round">
+            <span v-if="fund.isLocked">	&#128274;</span>
+            <span v-else>&#128275;</span>
+        </custom-button>
     </div>
 </template>
 
 <script>
 import CustomRange from './CustomRange.vue';
+import CustomButton from './Button.vue';
 
 export default {
     methods: {
@@ -72,7 +73,8 @@ export default {
     },
     props: ['fund', 'walletId'],
     components: {
-        CustomRange
+        CustomRange,
+        CustomButton
     }
 }
 </script>

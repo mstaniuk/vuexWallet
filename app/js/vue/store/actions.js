@@ -2,6 +2,7 @@ import Axios from 'axios';
 
 export default {
     getAllFunds({ commit }) {
+        commit('setFundsLoading', { isLoading: true });
         Axios.get('http://jsonstub.com/getFunds', {
             headers: {
                 'JsonStub-User-Key': '377a406a-4017-4c5a-bec7-3eaafe449d6c',
@@ -10,38 +11,41 @@ export default {
             data: {}
         }).then(({ data }) => {
             commit('getAllFunds', { data })
+            commit('setFundsLoading', { isLoading: false });
         }).catch(e => console.log(e));
     },
 
     // Save state to local storage
-    addWallet() { },
+    addWallet() {},
 
     // Save state to local storage
-    removeWallet() { },
-
-    // Get new values for children
-    // Save state to local storage
-    setWalletStartDate(store, { date }) { },
+    removeWallet() {},
 
     // Get new values for children
     // Save state to local storage
-    setWalletEndDate(store, { date }) { },
-
-    // Save state to local storage
-    setWalletName(store, { name }) { },
+    setWalletStartDate(store, { date }) {},
 
     // Get new values for children
     // Save state to local storage
-    setWaletInvestVaue(store, { value }) { },
+    setWalletEndDate(store, { date }) {},
 
     // Save state to local storage
-    setWalletMinimalInvestValue(store, { value }) { },
+    setWalletName(store, { name }) {},
+
+    // Get new values for children
+    // Save state to local storage
+    setWaletInvestVaue(store, { value }) {},
 
     // Save state to local storage
-    setWalletMaximalInvestValue(store, { value }) { },
+    setWalletMinimalInvestValue(store, { value }) {},
+
+    // Save state to local storage
+    setWalletMaximalInvestValue(store, { value }) {},
 
     // Get full fund from API and commit changes
     addFundToWallet({ commit }, { walletId, fundId }) {
+        commit('setWalletLoading', { isLoading: true });
+
         const fund = Axios.get('http://jsonstub.com/getFund' + parseInt(fundId), {
             headers: {
                 'JsonStub-User-Key': '377a406a-4017-4c5a-bec7-3eaafe449d6c',
@@ -51,6 +55,7 @@ export default {
         }).then(({ data: fund }) => {
             commit('addFundToWallet', { walletId, fund });
             commit('resetPercentages', { walletId });
+            commit('setWalletLoading', { isLoading: false });
         }).catch(e => console.log(e));
     },
 
@@ -61,14 +66,14 @@ export default {
     },
 
     // Save state to local storage
-    setFundStartValue(store, { fundId }, value) { },
+    setFundStartValue(store, { fundId }, value) {},
 
     // Save state to local storage
-    setFundEndValue(store, { fundId }, value) { },
+    setFundEndValue(store, { fundId }, value) {},
 
     // Save state to local storage
-    setFundLocked(store, { fundId }, value) { },
+    setFundLocked(store, { fundId }, value) {},
 
     // Save state to local storage
-    setFundPercentage(store, { fundId }, value) { },
+    setFundPercentage(store, { fundId }, value) {},
 };

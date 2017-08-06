@@ -1,0 +1,38 @@
+.button {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    font-weight: 300;
+    padding: 6px 10px;
+    will-change: box-shadow;
+    &:hover,
+    &:focus,
+    &:active {
+        outline: none;
+    }
+    &--primary {
+        background-color: $color-gray;
+        color: $color-gray-light;
+    }
+    &--success {
+        background-color: $color-green;
+        color: $color-gray-light;
+    }
+    &--round {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+    }
+    &.animate {
+        animation: impulse 0.5s ease-out 1;
+    }
+    @keyframes impulse {
+        0% {
+            box-shadow: 0 0 0 1px rgba($color-black, .2);
+        }
+        100% {
+            box-shadow: 0 0 0 20px rgba($color-black, 0);
+        }
+    }
+}

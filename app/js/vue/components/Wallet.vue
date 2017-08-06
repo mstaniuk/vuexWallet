@@ -1,16 +1,16 @@
 <template>
     <div>
         <div>
-            <button @click="remove">X</button>
             <h3 v-if="!isEditing">
                 {{ wallet.name }}
-                <button @click="toggleEdit">Edit</button>
             </h3>
             <div v-else>
                 <input v-model.lazy.trim="newName">
-                <button @click="saveEdit">save</button>
-                <button @click="discardEdit">cancel</button>
+                <custom-button @click="saveEdit" type="success">save</custom-button>
+                <custom-button @click="discardEdit" type="primary">cancel</custom-button>
             </div>
+            <custom-button @click="remove" type="primary round">&times;</custom-button>
+            <custom-button  v-if="!isEditing" @click="toggleEdit" type="primary round">&#9999;</custom-button>
         </div>
         <div>
             <div>
@@ -41,6 +41,7 @@
 <script>
 import Fund from './Fund.vue';
 import CustomRange from './CustomRange.vue';
+import CustomButton from './Button.vue';
 import defaults from '../../defaults.js';
 
 export default {
@@ -110,7 +111,8 @@ export default {
     },
     components: {
         Fund,
-        CustomRange
+        CustomRange,
+        CustomButton
     },
     props: ['wallet']
 }

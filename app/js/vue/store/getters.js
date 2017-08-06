@@ -29,5 +29,11 @@ export default {
         return (id) => {
             return state.wallets.find(wallet => wallet.id === id);
         }
+    },
+    isFundsLoading(state) {
+        return state.misc.isFundsLoading;
+    },
+    isWalletLoading(state) {
+        return state.misc.isWalletLoading;
     }
 };
