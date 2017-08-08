@@ -25,7 +25,7 @@
         </div>
         <custom-range v-model="percentage" :disabled="isSingle || fund.isLocked" :min="0" :max="100" />
         <custom-button @click="remove" type="primary round">&times;</custom-button>
-        <custom-button @click="toggleLock" type="primary round">
+        <custom-button @click="toggleLock" type="primary round" :disabled="isLessThanThreeActive">
             <span v-if="fund.isLocked">	&#128274;</span>
             <span v-else>&#128275;</span>
         </custom-button>
@@ -61,6 +61,9 @@ export default {
         },
         isSingle() {
             return this.wallet.funds.length < 2;
+        },
+        isLessThanThreeActive() {
+            return !this.fund.isLocked && (this.wallet.funds.filter(f => f.isLocked === false).length < 3);
         },
         percentage: {
             get() {
