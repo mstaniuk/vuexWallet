@@ -6,9 +6,6 @@
 
 <script>
 export default {
-    mounted() {
-        console.log(this);
-    },
     data() {
         return {
             isAnimating: false

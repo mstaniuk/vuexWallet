@@ -69,23 +69,42 @@ export default {
         }
     },
     setFundLocked(state, { walletId, fundId, value }) {
-        let wallet = state.wallets.find(wallet => wallet.id === walletId);
+        const wallet = state.wallets.find(wallet => wallet.id === walletId);
         let fund = wallet.funds.find(fund => fund.id === fundId);
 
         Vue.set(fund, 'isLocked', value);
     },
     setFundPercentage(state, { walletId, fundId, value }) {
-        let wallet = state.wallets.find(wallet => wallet.id === walletId);
-        let staticFund = wallet.funds.find(fund => fund.id === fundId);
-        let staticFundIndex = wallet.funds.findIndex(fund => fund.id === fundId);
-        let funds = wallet.funds.map(f => f.percentage);
-
+        const wallet = state.wallets.find(wallet => wallet.id === walletId);
+        const staticFund = wallet.funds.find(fund => fund.id === fundId);
         Vue.set(staticFund, 'percentage', value);
+        const lockedFunds = wallet.funds.filter(f => f.isLocked);
 
-        let newValues = distribute(funds, staticFundIndex, 100);
+        const activeFundIndex = wallet.funds.findIndex(fund => fund.id === fundId);
+        const staticIndexes = [];
+        wallet.funds.forEach((f, i) => {
+            if (f.isLocked) {
+                staticIndexes.push(i);
+            }
+        })
+        staticIndexes.push(activeFundIndex);
+
+        const maxValue = 100 - lockedFunds.reduce((a, b) => a + b.percentage, 0);
+
+        value = Math.min(value, maxValue);
+
+        const funds = wallet.funds.map((f, i) => {
+            // Don't change active fund globally before distribute
+            // Just mock that it's changed
+            if (i === activeFundIndex) {
+                return value;
+            }
+            return f.percentage
+        });
+
+        const newValues = distribute(funds, staticIndexes, 100);
 
         for (let i = 0, ii = wallet.funds.length; i < ii; i++) {
-            if (i === staticFundIndex) continue;
             const fund = wallet.funds[i];
             const val = newValues[i];
 

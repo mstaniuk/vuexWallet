@@ -18,23 +18,21 @@ export const debounce = function(callback, wait, immediate) {
     }
 };
 
-export const distribute = function(values, staticValue, max) {
-    var restSum = values
-        .filter(function(v, i) { return i !== staticValue; })
-        .reduce(function(a, b) { return a + b; }, 0);
-
-    var weights = values.map(function(v, i) {
-        if (i === staticValue) return null;
-        if (restSum === 0) return roundTo(1 / (values.length - 1), 2);
+export const distribute = function(values, staticIndexes, max) {
+    const staticSum = values
+        .filter((e, i) => staticIndexes.indexOf(i) > -1)
+        .reduce((a, b) => a + b, 0);
+    const staticDiff = max - staticSum;
+    const valuesSum = values.reduce((a, b) => a + b, 0);
+    const restSum = valuesSum - staticSum;
+    const diff = max - valuesSum;
+    const weights = values.map((v, i) => {
+        if (staticIndexes.indexOf(i) > -1) return 0;
+        if (restSum === 0) return 1 / (values.length - staticIndexes.length);
         return v / restSum;
     });
-    return weights.map(function(v, i) {
-        if (v === null) {
-            return values[i];
-        }
 
-        return v * (max - values[staticValue]);
-    });
+    return values.map((v, i) => v + weights[i] * diff);
 };
 
 export const formatCurrency = function(value) {
