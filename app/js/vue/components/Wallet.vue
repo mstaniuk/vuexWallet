@@ -26,15 +26,14 @@
                 <small>{{ wallet.displayType }}</small>
             </div>
         </div>
-    
         <h3>Funds {{funds.length}}</h3>
         <ul>
             <li v-for="fund in funds" :key="fund.id">
                 <fund :fund="fund" :walletId="wallet.id" />
             </li>
         </ul>
-    
         <custom-range v-model="rangeInvestValue" :min="1" :max="investValueRangeMax" />
+        <input type="number" @change="(v) => setInvestValue(v.target.value)" :value="wallet.investValue"/>
     </div>
 </template>
 

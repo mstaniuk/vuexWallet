@@ -27,6 +27,7 @@
             </div>
         </div>
         <custom-range v-model="percentage" :disabled="isSingle || fund.isLocked" :min="0" :max="100" :maxValue="maxValue" />
+        <input type="number" v-model.lazy="percentage" :disabled="isSingle || fund.isLocked" :max="maxValue" />
         <custom-button @click="remove" type="primary round">&times;</custom-button>
         <custom-button @click="toggleLock" type="primary round" :disabled="isLessThanThreeActive">
             <span v-if="fund.isLocked">	&#128274;</span>

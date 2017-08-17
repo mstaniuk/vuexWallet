@@ -77,7 +77,6 @@ export default {
     setFundPercentage(state, { walletId, fundId, value }) {
         const wallet = state.wallets.find(wallet => wallet.id === walletId);
         const staticFund = wallet.funds.find(fund => fund.id === fundId);
-        // Vue.set(staticFund, 'percentage', value);
         const lockedFunds = wallet.funds.filter(f => f.isLocked);
 
         const activeFundIndex = wallet.funds.findIndex(fund => fund.id === fundId);
