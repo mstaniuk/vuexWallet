@@ -30,6 +30,18 @@ export default {
             return state.wallets.find(wallet => wallet.id === id);
         }
     },
+    maxActiveFundValue(state) {
+        return (walletId, fundId, maxValue) => {
+            const wallet = state.wallets.find(wallet => wallet.id === walletId);
+            const activeFundIndex = wallet.funds.findIndex(fund => fund.id === fundId);
+            const nonActiveSum = wallet.funds.reduce((a, b, i) => {
+                if (b.isLocked === false) return a;
+                return a + b.percentage
+            }, 0);
+            return maxValue - nonActiveSum;
+        }
+
+    },
     isFundsLoading(state) {
         return state.misc.isFundsLoading;
     },

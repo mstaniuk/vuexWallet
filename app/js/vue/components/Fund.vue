@@ -22,8 +22,11 @@
             <div>
                 <small>{{fund.percentage}}</small>
             </div>
+            <div>
+                <small>{{maxValue}}</small>
+            </div>
         </div>
-        <custom-range v-model="percentage" :disabled="isSingle || fund.isLocked" :min="0" :max="100" />
+        <custom-range v-model="percentage" :disabled="isSingle || fund.isLocked" :min="0" :max="100" :maxValue="maxValue" />
         <custom-button @click="remove" type="primary round">&times;</custom-button>
         <custom-button @click="toggleLock" type="primary round" :disabled="isLessThanThreeActive">
             <span v-if="fund.isLocked">	&#128274;</span>
@@ -40,9 +43,6 @@ export default {
     methods: {
         toggleLock(isLocked) {
             this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value: val });
-        },
-        changePercentage(val) {
-            
         },
         remove() {
             this.$store.dispatch('removeFundFromWallet', { walletId: this.walletId, fundId: this.fund.id })
@@ -72,6 +72,9 @@ export default {
             set(value) {
                 this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value });
             }
+        },
+        maxValue() {
+            return this.$store.getters.maxActiveFundValue(this.walletId, this.fund.id, 100);
         }
     },
     props: ['fund', 'walletId'],

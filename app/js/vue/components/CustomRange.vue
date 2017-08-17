@@ -30,6 +30,11 @@ export default {
         document.removeEventListener('touchend', this.onMouseUp);
         window.removeEventListener('resize', this.getWidgetBounds);
     },
+    computed: {
+        hasReachedMaxValue() {
+            return this.maxValue !== null && this.maxValue <= this.innerValue;
+        }
+    },
     methods: {
         getWidgetBounds() {
             this.widgetBounds = this.$refs.widget.getBoundingClientRect();
@@ -56,16 +61,22 @@ export default {
         onMouseMove(e) {
             if (this.isActive && !this.disabled) {
                 e.stopPropagation();
-                var clientX = typeof e.targetTouches !== 'undefined' ? e.targetTouches[0].clientX : e.clientX;
+                const clientX = typeof e.targetTouches !== 'undefined' ? e.targetTouches[0].clientX : e.clientX;
                 this.setPosition(this.position + clientX - this.lastPosition);
 
-                this.lastPosition = Math.max(
-                    this.widgetBounds.left,
-                    Math.min(
-                        clientX,
-                        this.widgetBounds.left + this.widgetBounds.width
-                    )
-                );
+                if(this.hasReachedMaxValue) {
+                    this.lastPosition = this.widgetBounds.left + this.position;
+                } else {
+                    this.lastPosition = Math.max(
+                        this.widgetBounds.left,
+                        Math.min(
+                            clientX,
+                            this.widgetBounds.left + this.widgetBounds.width
+                        )
+                    );
+                }
+
+                
             }
         },
         onMouseUp(e) {
@@ -87,6 +98,10 @@ export default {
                 this.setPosition(0);
             } else if (value > this.max) {
                 this.setPosition(this.widgetBounds.width);
+            } else if(this.maxValue !== null && this.maxValue < value) {
+                this.setPositionFromValue(this.maxValue);
+                this.innerValue = this.maxValue;
+                this.$emit('input', this.innerValue);
             } else {
                 let newValue = Math.ceil(value / this.step) * this.step;
 
@@ -112,6 +127,7 @@ export default {
     props: {
         min: {type: Number, default: 0},
         max: {type: Number, default: 100},
+        maxValue: {type: Number, default: null},
         step: {type: Number, default: 1},
         disabled: {type: Boolean, default: false},
         value: {type: Number, default: 0}
