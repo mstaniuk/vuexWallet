@@ -19,15 +19,27 @@
             <div>
                 <small>{{fund.isLocked}}</small>
             </div>
-            <div>
-                <small>{{fund.percentage}}</small>
-            </div>
-            <div>
-                <small>{{maxValue}}</small>
-            </div>
         </div>
-        <custom-range v-model="percentage" :disabled="isSingle || fund.isLocked" :min="0" :max="100" :maxValue="maxValue" />
-        <input type="number" v-model.lazy="percentage" :disabled="isSingle || fund.isLocked" :max="maxValue" />
+        <custom-range
+            v-model="percentage"
+            :disabled="isInputDisabled"
+            :min="0" :max="100"
+            :maxValue="maxPercentageValue" />
+
+        <input
+            v-if="wallet.displayType === WALLET_DISPLAY_TYPE_PLN"
+            v-model.lazy="worth"
+            :disabled="isInputDisabled"
+            :max="maxWorthValue" 
+            type="number"/>
+
+        <input
+            v-if="wallet.displayType === WALLET_DISPLAY_TYPE_PERCENTAGE"
+            v-model.lazy="percentage"
+            :disabled="isInputDisabled"
+            :max="maxPercentageValue" 
+            type="number"/>
+
         <custom-button @click="remove" type="primary round">&times;</custom-button>
         <custom-button @click="toggleLock" type="primary round" :disabled="isLessThanThreeActive">
             <span v-if="fund.isLocked">	&#128274;</span>
@@ -39,8 +51,15 @@
 <script>
 import CustomRange from './CustomRange.vue';
 import CustomButton from './Button.vue';
+import {WALLET_DISPLAY_TYPE_PLN, WALLET_DISPLAY_TYPE_PERCENTAGE} from '../../consts.js';
 
 export default {
+    data() {
+        return {
+            WALLET_DISPLAY_TYPE_PLN,
+            WALLET_DISPLAY_TYPE_PERCENTAGE
+        };
+    },
     methods: {
         toggleLock(isLocked) {
             this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value: val });
@@ -49,16 +68,15 @@ export default {
             this.$store.dispatch('removeFundFromWallet', { walletId: this.walletId, fundId: this.fund.id })
         },
         toggleLock() {
-            // Todo: dispatch something ¯\_(ツ)_/¯
-            // this.$store.dispatch()
-
-            // Temp:
-            this.fund.isLocked = !this.fund.isLocked;
+            this.$store.commit('setFundLocked', { walletId: this.walletId, fundId: this.fund.id, value: !this.fund.isLocked });
         }
     },
     computed: {
         wallet() {
             return this.$store.getters.fundsWallet(this.walletId);
+        },
+        isInputDisabled() {
+            return this.isSingle || this.fund.isLocked;
         },
         isSingle() {
             return this.wallet.funds.length < 2;
@@ -74,8 +92,20 @@ export default {
                 this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value });
             }
         },
-        maxValue() {
+        worth: {
+            get() {
+                return this.fund.percentage/100 * this.wallet.investValue;
+            },
+            set(value) {
+                const percentage = (value / this.wallet.investValue)*100
+                this.$store.commit('setFundPercentage', { walletId: this.walletId, fundId: this.fund.id, value: percentage });
+            }
+        },
+        maxPercentageValue() {
             return this.$store.getters.maxActiveFundValue(this.walletId, this.fund.id, 100);
+        },
+        maxWorthValue() {
+            return this.maxPercentageValue/ 100 * this.wallet.investValue;
         }
     },
     props: ['fund', 'walletId'],
