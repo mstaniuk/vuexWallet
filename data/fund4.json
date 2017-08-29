@@ -1,0 +1,8 @@
+{
+    "id": "004",
+    "name": "Testowy fundusz #4",
+    "startValue": 210,
+    "endValue": 210,
+    "risk": 3,
+    "horizon": 1
+}

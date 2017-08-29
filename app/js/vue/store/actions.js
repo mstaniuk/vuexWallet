@@ -3,13 +3,7 @@ import Axios from 'axios';
 export default {
     getAllFunds({ commit }) {
         commit('setFundsLoading', { isLoading: true });
-        Axios.get('http://jsonstub.com/getFunds', {
-            headers: {
-                'JsonStub-User-Key': '377a406a-4017-4c5a-bec7-3eaafe449d6c',
-                'JsonStub-Project-Key': '9c364e79-14e4-49f2-ac3b-61559ed80668'
-            },
-            data: {}
-        }).then(({ data }) => {
+        Axios.get('/data/funds.json').then(({ data }) => {
             commit('getAllFunds', { data })
             commit('setFundsLoading', { isLoading: false });
         }).catch(e => console.log(e));
@@ -46,13 +40,7 @@ export default {
     addFundToWallet({ commit }, { walletId, fundId }) {
         commit('setWalletLoading', { isLoading: true });
 
-        const fund = Axios.get('http://jsonstub.com/getFund' + parseInt(fundId), {
-            headers: {
-                'JsonStub-User-Key': '377a406a-4017-4c5a-bec7-3eaafe449d6c',
-                'JsonStub-Project-Key': '9c364e79-14e4-49f2-ac3b-61559ed80668'
-            },
-            data: {}
-        }).then(({ data: fund }) => {
+        const fund = Axios.get('/data/fund' + parseInt(fundId) + '.json').then(({ data: fund }) => {
             commit('addFundToWallet', { walletId, fund });
             commit('resetPercentages', { walletId });
             commit('setWalletLoading', { isLoading: false });
