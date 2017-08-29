@@ -1,29 +1,33 @@
 <template>
-    <div class="fund-line" :class="'fund-line--risk-'+fund.risk">
-        <header class="fund-line__header">
-            <h3 class="fund-line__title">
-                {{fund.name}}
-            </h3>
-        </header>
+    <div class="fund-line" :class="'fund-line--risk-'+fund.risk" @click="onClickHandler">
         <div class="fund-line__content">
-            <ul class="fund-line__list">
-                <li class="fund-line__item">
-                    <div>Ryzyko:</div>
-                    <div>{{fund.risk}}</div>
-                </li>
-                <li class="fund-line__item">
-                    <div>Horyzont:</div>
-                    <div>{{fund.horizon}}</div>
-                </li>
-            </ul>
+            <div class="fund-line__front">
+                <header class="fund-line__header">
+                    <h3 class="fund-line__title">
+                        {{fund.name}}
+                    </h3>
+                </header>
+                <div class="fund-line__info">
+                    <div class="fund-line__info-item">Risk: {{fund.risk}}</div>
+                    <div class="fund-line__info-item">Horizon: {{fund.horizon}}</div>
+                </div>
+            </div>
+            <div class="fund-line__back">
+                <div class="fund-line__back-inner" v-if="walletsWithoutFund.length <= 0">
+                    <div class="fund-line__label">Exist in all wallets.</div>
+                </div>
+                <div class="fund-line__back-inner" v-else-if="walletsWithoutFund.length === 1">
+                    <div class="fund-line__label">Add to <br>{{wallets[0].name}}</div>
+                </div>
+                <div class="fund-line__back-inner" v-else>
+                    <label class="fund-line__label" :for="'AddFundTo'+fund.id">Add to </label>
+                    <select :id="'AddFundTo'+fund.id" @change="addToWallet">
+                        <option selected disabled>Choose wallet</option>
+                        <option v-for="wallet in walletsWithoutFund" :value="wallet.id" :key="wallet.id">{{wallet.name}}</option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <footer class="fund-line__footer">
-            <label :for="'AddFundTo'+fund.id">Dodaj do: </label>
-            <select :id="'AddFundTo'+fund.id" @change="addToWallet">
-                <option selected disabled> Wybierz portfel</option>
-                <option v-for="wallet in walletsWithoutFund" :value="wallet.id" :key="wallet.id">{{wallet.name}}</option>
-            </select>
-        </footer>
     </div>
 </template>
 
@@ -41,6 +45,15 @@ export default {
                 walletId,
                 fundId: this.fund.id
             })
+        },
+        onClickHandler() {
+            if(this.walletsWithoutFund.length === 1) {
+
+                this.$store.dispatch('addFundToWallet', {
+                    walletId: this.walletsWithoutFund[0].id,
+                    fundId: this.fund.id
+                })
+            }
         }
     },
     computed: {

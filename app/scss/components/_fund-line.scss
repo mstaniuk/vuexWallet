@@ -1,41 +1,60 @@
 .fund-line {
-    padding: 0 5px;
-    margin: 0;
-    border-left: 2px solid $color-black;
-    display: block;
-    &--risk-1 {
-        border-color: $color-risk-1
+    $fund-line: &;
+    overflow: hidden;
+    &:hover,
+    &:focus {
+        cursor: pointer;
+        #{$fund-line}__back {
+            transform: translateY(0);
+        }
     }
-    &--risk-2 {
-        border-color: $color-risk-2
+    &__header {
+        margin-bottom: 10px;
     }
-    &--risk-3 {
-        border-color: $color-risk-3
-    }
-    &--risk-4 {
-        border-color: $color-risk-4
-    }
-    &--risk-5 {
-        border-color: $color-risk-5
-    }
-    &--risk-6 {
-        border-color: $color-risk-6
-    }
-    &--risk-7 {
-        border-color: $color-risk-7
-    }
-    &__header {}
     &__title {
         margin: 0;
+        font-weight: 200;
     }
-    &__list {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+    &__content {
+        position: relative;
+        padding: 10px;
     }
-    &__item {
+    &__front,
+    &__back {
+        backface-visibility: hidden;
+    }
+    &__front {
+        position: relative;
+        z-index: 2;
+    }
+    &__info {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
+    }
+    &__back {
+        transition: transform 300ms ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateY(100%);
+        background-color: $color-blue;
+    }
+    &__back-inner {
+        text-align: center;
+        padding: 10px;
+    }
+    &__label {
+        color: $color-gray-white;
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 400;
     }
 }

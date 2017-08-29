@@ -11,11 +11,10 @@ const autoprefixesOptions = {
 const autoprefixer = require('autoprefixer')(autoprefixesOptions);
 const CleanCSS = require('clean-css');
 
-const scss = function () {
+const scss = function() {
     return new Promise((resolve, reject) => {
-        sass.render(
-            { file: './app/scss/main.scss' },
-            function (err, result) {
+        sass.render({ file: './app/scss/main.scss' },
+            function(err, result) {
                 if (err !== null) {
                     reject(err.formatted);
                 } else {
@@ -26,7 +25,7 @@ const scss = function () {
     });
 };
 
-const prefix = function (css) {
+const prefix = function(css) {
     return new Promise((resolve, reject) => {
         postcss([autoprefixer])
             .process(css)
@@ -41,21 +40,20 @@ const prefix = function (css) {
     });
 }
 
-const minify = function (css) {
+const minify = function(css) {
     return new CleanCSS({ returnPromise: true }).minify(css);
 }
 
-const save = function (css, fileName) {
+const save = function(css, fileName) {
     return new Promise((resolve, reject) => {
-        fs.writeFile("./dist/" + fileName + ".css", css, function (err) {
+        fs.writeFile("./dist/" + fileName + ".css", css, function(err) {
             if (err) reject(err);
             resolve(css);
         });
     });
 }
 
-console.log('Watching: ' + './app/scss'.green);
-watch('./app/scss', { recursive: true }, function (evt, name) {
+const process = function() {
     console.log('SCSS'.green + ' changed');
     const time = performanceNow();
 
@@ -72,5 +70,8 @@ watch('./app/scss', { recursive: true }, function (evt, name) {
         .then(() => {
             console.log(('Finished in ' + ((performanceNow() - time).toFixed(2)) + 'ms'));
         });
-});
+}
 
+console.log('Watching: ' + './app/scss'.green);
+process();
+watch('./app/scss', { recursive: true }, process);

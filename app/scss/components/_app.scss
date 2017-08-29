@@ -1,0 +1,17 @@
+.app {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 100vh;
+    &__wallets {
+        flex: 1 1 auto;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+    &__aside {
+        flex: 0 0 auto;
+        width: 300px;
+        border-right: 1px solid $color-gray-white;
+    }
+}

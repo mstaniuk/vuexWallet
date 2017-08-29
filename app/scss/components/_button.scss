@@ -11,15 +11,12 @@
         outline: none;
     }
     &--primary {
-        background-color: $color-gray;
-        color: $color-gray-light;
+        background-color: $color-gray-dark;
+        color: $color-blue;
         &:disabled {
-            background-color: #777;
+            background-color: $color-gray;
+            color: $color-white;
         }
-    }
-    &--success {
-        background-color: $color-green;
-        color: $color-gray-light;
     }
     &--round {
         border-radius: 50%;
