@@ -23,16 +23,22 @@
                 </ul>
             </div>
         </aside>
-        <section class="app__wallets">
-            <header>
-                <h2>Wallets ({{walletsCount}})</h2> <custom-button @click="addWallet" type="primary round">+</custom-button>
+        <section class="app__wallets wallets">
+            <header class="wallets__header">
+                <h2 class="wallets__title">Wallets ({{walletsCount}})</h2>
+
+                <div class="wallets__header-actions">
+                    <custom-button @click="addWallet" type="primary">Add Wallet</custom-button>
+                </div>
             </header>
             <div class="loader" v-if="isWalletLoading"></div>
-            <ul>
-                <li v-for="wallet in wallets" :key="wallet.id" class="funds-list__item">
-                    <wallet :wallet="wallet" />
-                </li>
-            </ul>
+            <div class="wallets__content">
+                <ul class="wallets__list">
+                    <li v-for="wallet in wallets" :key="wallet.id" class="wallets__item">
+                        <wallet :wallet="wallet" />
+                    </li>
+                </ul>
+            </div>
         </section>
     </div>
 </template>

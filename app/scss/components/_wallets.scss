@@ -1,0 +1,34 @@
+.wallets {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    height: 100vh;
+    &__header {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 10px;
+        background-color: $color-gray-white;
+    }
+    &__title {
+        flex: 1 1 auto;
+        margin: 0;
+    }
+    &__header-actions {
+        flex: 0 0 auto;
+    }
+    &__content {
+        flex: 1 1 auto;
+        overflow: auto;
+        padding: 10px;
+    }
+    &__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    &__item {}
+}

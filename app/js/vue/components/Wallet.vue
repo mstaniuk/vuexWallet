@@ -1,32 +1,24 @@
 <template>
-    <div>
-        <div>
-            <h3 v-if="!isEditing">
+    <div class="wallet">
+        <header class="wallet__header">
+            <h3 v-if="!isEditing" class="wallet__title">
                 {{ wallet.name }}
             </h3>
-            <div v-else>
-                <input v-model.lazy.trim="newName">
-                <custom-button @click="saveEdit" type="success">save</custom-button>
-                <custom-button @click="discardEdit" type="primary">cancel</custom-button>
+            <div  v-if="!isEditing" class="wallet__header-actions">
+                <custom-button @click="toggleEdit" type="primary">Edit</custom-button>
+                <custom-button @click="remove" type="clear">Remove</custom-button>
             </div>
-            <custom-button @click="remove" type="primary round">&times;</custom-button>
-            <custom-button  v-if="!isEditing" @click="toggleEdit" type="primary round">&#9999;</custom-button>
-        </div>
+
+            <input class="header" v-if="isEditing" v-model.lazy.trim="newName">
+            <div class="wallet__header-actions" v-if="isEditing">
+                <custom-button @click="saveEdit" type="primary">save</custom-button>
+                <custom-button @click="discardEdit" type="clear">cancel</custom-button>
+            </div>
+        </header>
         <div>
-            <div>
-                <small>{{ wallet.startDate }}</small>
-            </div>
-            <div>
-                <small>{{ wallet.endDate }}</small>
-            </div>
-            <div>
-                <small>{{ wallet.investValue }}</small>
-            </div>
-            <div>
-                <small>{{ wallet.displayType }}</small>
-            </div>
+            {{ formattedStartDate }} - {{ formattedEndDate }}
         </div>
-        <h3>Funds {{funds.length}}</h3>
+        <h3>Funds {{wallet.funds.length}}</h3>
         <ul>
             <li v-for="fund in funds" :key="fund.id">
                 <fund :fund="fund" :walletId="wallet.id" />
@@ -58,6 +50,7 @@ import CustomRange from './CustomRange.vue';
 import CustomButton from './Button.vue';
 import defaults from '../../defaults.js';
 import {WALLET_DISPLAY_TYPE_PLN, WALLET_DISPLAY_TYPE_PERCENTAGE} from '../../consts.js';
+import {formatDate} from '../../misc.js';
 
 export default {
     data() {
@@ -71,6 +64,12 @@ export default {
     computed: {
         funds() {
             return this.$store.getters.fundsFromWallet(this.wallet.id);
+        },
+        formattedStartDate() {
+            return formatDate(this.wallet.startDate);
+        },
+        formattedEndDate() {
+            return formatDate(this.wallet.endDate);
         },
         displayType: {
             get() {
