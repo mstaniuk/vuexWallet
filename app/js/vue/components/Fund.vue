@@ -1,51 +1,53 @@
 <template>
-    <div>
-        <div>
-            <h4>{{fund.name}}</h4>
-        </div>
-        <div>
-            <div>
-                <small>{{fund.startValue}}</small>
-            </div>
-            <div>
-                <small>{{fund.endValue}}</small>
-            </div>
-            <div>
-                <small>{{fund.risk}}</small>
-            </div>
-            <div>
-                <small>{{fund.horizon}}</small>
-            </div>
-            <div>
-                <small>{{fund.isLocked}}</small>
-            </div>
-        </div>
-        <custom-range
-            v-model="percentage"
-            :disabled="isInputDisabled"
-            :min="0" :max="100"
-            :maxValue="maxPercentageValue" />
+    <section class="fund">
+        <header class="fund__header">
+            <custom-button @click="remove" type="primary round">&times;</custom-button>
+            <h4 class="fund__title">{{fund.name}}</h4>
+        </header>
+        <ul class="fund__props">
+            <li class="fund__prop">
+                Risk: {{fund.risk}}
+            </li>
+            
+            <li class="fund__prop">
+                Horizon: {{fund.horizon}}
+            </li>
 
-        <input
-            v-if="wallet.displayType === WALLET_DISPLAY_TYPE_PLN"
-            v-model.lazy="worth"
-            :disabled="isInputDisabled"
-            :max="maxWorthValue" 
-            type="number"/>
+            <li class="fund__prop" v-if="wallet.displayType === WALLET_DISPLAY_TYPE_PERCENTAGE">
+                ROI: {{returnPercentage}}
+            </li>
+            <li class="fund__prop" v-if="wallet.displayType === WALLET_DISPLAY_TYPE_PLN">
+                Return value: {{returnValue}}
+            </li>
 
-        <input
-            v-if="wallet.displayType === WALLET_DISPLAY_TYPE_PERCENTAGE"
-            v-model.lazy="percentage"
-            :disabled="isInputDisabled"
-            :max="maxPercentageValue" 
-            type="number"/>
+            <li class="fund__prop fund__prop--actions">
+                <custom-range
+                    v-model="percentage"
+                    :disabled="isInputDisabled"
+                    :min="0" :max="100"
+                    :maxValue="maxPercentageValue" />
 
-        <custom-button @click="remove" type="primary round">&times;</custom-button>
-        <custom-button @click="toggleLock" type="primary round" :disabled="isLessThanThreeActive">
-            <span v-if="fund.isLocked">	&#128274;</span>
-            <span v-else>&#128275;</span>
-        </custom-button>
-    </div>
+                <input
+                    v-if="wallet.displayType === WALLET_DISPLAY_TYPE_PLN"
+                    v-model.lazy="worth"
+                    :disabled="isInputDisabled"
+                    :max="maxWorthValue" 
+                    type="number"/>
+
+                <input
+                    v-if="wallet.displayType === WALLET_DISPLAY_TYPE_PERCENTAGE"
+                    v-model.lazy="percentage"
+                    :disabled="isInputDisabled"
+                    :max="maxPercentageValue" 
+                    type="number"/>
+
+                <custom-button @click="toggleLock" type="primary round" :disabled="isLessThanThreeActive">
+                    <span v-if="fund.isLocked">	&#128274;</span>
+                    <span v-else>&#128275;</span>
+                </custom-button>
+            </li>
+        </ul>
+    </section>
 </template>
 
 <script>
@@ -83,6 +85,12 @@ export default {
         },
         isLessThanThreeActive() {
             return !this.fund.isLocked && (this.wallet.funds.filter(f => f.isLocked === false).length < 3);
+        },
+        returnPercentage() {
+            return parseInt(((this.fund.endValue - this.fund.startValue) / this.fund.startValue)*100)/100;
+        },
+        returnValue() {
+            return this.returnPercentage * this.wallet.investValue * this.percentage;
         },
         percentage: {
             get() {

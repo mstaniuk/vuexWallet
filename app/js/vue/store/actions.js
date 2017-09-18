@@ -40,7 +40,7 @@ export default {
     addFundToWallet({ commit }, { walletId, fundId }) {
         commit('setWalletLoading', { isLoading: true });
 
-        const fund = Axios.get('/data/fund' + parseInt(fundId) + '.json').then(({ data: fund }) => {
+        Axios.get('/data/fund' + parseInt(fundId) + '.json').then(({ data: fund }) => {
             commit('addFundToWallet', { walletId, fund });
             commit('resetPercentages', { walletId });
             commit('setWalletLoading', { isLoading: false });

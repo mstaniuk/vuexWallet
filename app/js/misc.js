@@ -22,7 +22,6 @@ export const distribute = function(values, staticIndexes, max) {
     const staticSum = values
         .filter((e, i) => staticIndexes.indexOf(i) > -1)
         .reduce((a, b) => a + b, 0);
-    const staticDiff = max - staticSum;
     const valuesSum = values.reduce((a, b) => a + b, 0);
     const restSum = valuesSum - staticSum;
     const diff = max - valuesSum;

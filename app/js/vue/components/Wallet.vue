@@ -15,32 +15,39 @@
                 <custom-button @click="discardEdit" type="clear">cancel</custom-button>
             </div>
         </header>
-        <div>
+        <div class="wallet__date">
             {{ formattedStartDate }} - {{ formattedEndDate }}
         </div>
-        <h3>Funds {{wallet.funds.length}}</h3>
-        <ul>
-            <li v-for="fund in funds" :key="fund.id">
-                <fund :fund="fund" :walletId="wallet.id" />
-            </li>
-        </ul>
-        <custom-range v-model="rangeInvestValue" :min="1" :max="investValueRangeMax" />
-        <div>
-            <span>Display type</span>
-            <div>
-                <label :for="'dispType'+wallet.id+'pln'">
-                    <input type="radio" :name="'dispType'+wallet.id" :id="'dispType'+wallet.id+'pln'" :value="WALLET_DISPLAY_TYPE_PLN" v-model="displayType"/>
-                    <span>PLN</span>
-                </label>
+
+        <div class="wallet__content">
+            <div class="wallet__funds">
+                <h3 class="wallet__funds-title">
+                    Funds {{wallet.funds.length}}
+                </h3>
+                <ul class="wallet__funds-list">
+                    <li v-for="fund in funds" :key="fund.id" class="wallet__fund">
+                        <fund :fund="fund" :walletId="wallet.id" />
+                    </li>
+                </ul>
             </div>
+            <custom-range v-model="rangeInvestValue" :min="1" :max="investValueRangeMax" />
             <div>
-                <label :for="'dispType'+wallet.id+'percentage'">
-                    <input type="radio" :name="'dispType'+wallet.id" :id="'dispType'+wallet.id+'percentage'" :value="WALLET_DISPLAY_TYPE_PERCENTAGE" v-model="displayType"/>
-                    <span>Percentage</span>
-                </label>
+                <span>Display type</span>
+                <div>
+                    <label :for="'dispType'+wallet.id+'pln'">
+                        <input type="radio" :name="'dispType'+wallet.id" :id="'dispType'+wallet.id+'pln'" :value="WALLET_DISPLAY_TYPE_PLN" v-model="displayType"/>
+                        <span>PLN</span>
+                    </label>
+                </div>
+                <div>
+                    <label :for="'dispType'+wallet.id+'percentage'">
+                        <input type="radio" :name="'dispType'+wallet.id" :id="'dispType'+wallet.id+'percentage'" :value="WALLET_DISPLAY_TYPE_PERCENTAGE" v-model="displayType"/>
+                        <span>Percentage</span>
+                    </label>
+                </div>
             </div>
+            <input type="number" @change="v => setInvestValue(v.target.value)" :value="wallet.investValue"/>
         </div>
-        <input type="number" @change="v => setInvestValue(v.target.value)" :value="wallet.investValue"/>
     </div>
 </template>
 

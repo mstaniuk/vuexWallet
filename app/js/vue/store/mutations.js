@@ -1,7 +1,6 @@
 import defaults from '../../defaults'
-import { checkDateFormat, distribute } from '../../misc'
+import { distribute } from '../../misc'
 import Vue from 'vue';
-import Axios from 'axios';
 import * as consts from '../../consts.js';
 export default {
     getAllFunds(state, { data }) {
@@ -15,7 +14,7 @@ export default {
         investValue = 10000,
         displayType = consts.WALLET_DISPLAY_TYPE_PERCENTAGE
     }) {
-        name = !!name ? name : defaults.walletName;
+        name = name ? name : defaults.walletName;
         Vue.set(
             state.wallets,
             state.wallets.length, {
@@ -87,7 +86,6 @@ export default {
     },
     setFundPercentage(state, { walletId, fundId, value }) {
         const wallet = state.wallets.find(wallet => wallet.id === walletId);
-        const staticFund = wallet.funds.find(fund => fund.id === fundId);
         const lockedFunds = wallet.funds.filter(f => f.isLocked);
 
         const activeFundIndex = wallet.funds.findIndex(fund => fund.id === fundId);

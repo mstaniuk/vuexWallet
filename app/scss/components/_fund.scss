@@ -1,0 +1,29 @@
+.fund {
+    &__header {
+        display: flex;
+        align-items: center;
+    }
+
+    &__title {
+        margin: 0 0 0 5px;
+    }
+
+    &__props {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    &__prop {
+        flex: 1 2 auto;
+        width: 100%;
+
+        &--actions {
+            flex: 0 0 auto;
+            align-items: center;
+            display: flex;
+            width: auto;
+        }
+    }
+}
