@@ -24,7 +24,12 @@
     "scripts": {
         "webpack:build": "./node_modules/webpack/bin/webpack.js --config webpack.config.js --progress --colors",
         "webpack:watch": "./node_modules/webpack/bin/webpack.js --config webpack.config.js --colors --watch",
+        "server": "./node_modules/http-server/bin/http-server",
         "scss:watch": "node scripts/processStyles.js",
-        "watch": "npm run scss:watch & npm run webpack:watch"
+        "watch": "npm run scss:watch && npm run webpack:watch && npm run server"
+    },
+    "dependencies": {
+        "http-server": "^0.11.1",
+        "performance-now": "^2.1.0"
     }
 }

@@ -12,3 +12,18 @@
     * Add Vuex to project :white_check_mark:
     
 * Styles :construction::x:
+
+## Install
+
+1. Install dependencies
+    ```
+    npm install
+    ```
+2. Build/watch and run server
+    ```
+    npm run watch
+    ```
+3. Open in browser
+    ```
+    open http://localhost:8080/
+    ```
